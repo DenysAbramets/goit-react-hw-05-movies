@@ -6,9 +6,11 @@ const Review = () => {
   const { movieId } = useParams();
   const [movie, setMovie] = useState([]);
   useEffect(() => {
-    getReviews(movieId).then(films => {
-      setMovie(films.results);
-    });
+    getReviews(movieId)
+      .then(films => {
+        setMovie(films.results);
+      })
+      .catch(err => console.log(err));
   }, [movieId]);
 
   return (

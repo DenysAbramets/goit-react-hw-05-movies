@@ -7,9 +7,11 @@ const Cast = () => {
 
   console.log(movieId);
   useEffect(() => {
-    getCastDetails(movieId).then(films => {
-      setMovie(films.cast);
-    });
+    getCastDetails(movieId)
+      .then(films => {
+        setMovie(films.cast);
+      })
+      .catch(err => console.log(err));
   }, [movieId]);
   return (
     <div>

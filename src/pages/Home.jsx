@@ -5,9 +5,11 @@ import { axiosGetFilms } from 'services/trend-movies-API';
 const Home = () => {
   const [films, setFilms] = useState([]);
   useEffect(() => {
-    axiosGetFilms().then(films => {
-      setFilms(films.results);
-    });
+    axiosGetFilms()
+      .then(films => {
+        setFilms(films.results);
+      })
+      .catch(err => console.log(err));
   }, []);
 
   return (
