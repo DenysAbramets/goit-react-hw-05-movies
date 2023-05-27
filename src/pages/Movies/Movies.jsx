@@ -1,6 +1,16 @@
-import { useSearchParams, Link, useLocation } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getSearchResults } from 'services/movie-search-API';
+import { useLocation } from 'react-router-dom';
+import {
+  Button,
+  Film,
+  Form,
+  Input,
+  List,
+  ListItem,
+  MovieContainer,
+} from './Movies.styled';
 
 const Movies = () => {
   const [films, setFilms] = useState([]);
@@ -19,28 +29,30 @@ const Movies = () => {
     const search = e.target.elements.search.value;
     console.log(e.target.elements.search.value);
     setSearchParams({ query: search });
+    e.target.elements.search.value = '';
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <input
+    <MovieContainer>
+      <Form onSubmit={handleSubmit}>
+        <Input
           type="text"
           name="search"
           placeholder="Enter name of film you want to find"
         />
-        <button type="submit">Search</button>
-      </form>
-      <ul>
-        {films.map(film => (
-          <li key={film.id}>
-            <Link to={`/movies/${film.id}`} state={{ from: location }}>
-              {film.title}
-            </Link>
-          </li>
+        <Button type="submit">Search</Button>
+      </Form>
+
+      <List>
+        {films.map(({ title, id }) => (
+          <ListItem key={id}>
+            <Film to={`/movies/${id}`} state={{ from: location }}>
+              {title}
+            </Film>
+          </ListItem>
         ))}
-      </ul>
-    </div>
+      </List>
+    </MovieContainer>
   );
 };
 export default Movies;

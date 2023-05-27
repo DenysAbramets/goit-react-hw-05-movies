@@ -1,7 +1,22 @@
+/* eslint-disable react/jsx-no-undef */
 import { Link, Outlet, useParams, useLocation } from 'react-router-dom';
+
 import { movieDetails } from 'services/movie-details-API';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRef } from 'react';
+import {
+  Button,
+  Capture,
+  Genres,
+  Image,
+  Overview,
+  Vote,
+  Container,
+  Card,
+  List,
+  ListItem,
+  StyledLink,
+} from './MovieDetails.styled';
 
 const MovieDetails = () => {
   const { movieId } = useParams();
@@ -20,32 +35,38 @@ const MovieDetails = () => {
   }
 
   return (
-    <div>
+    <>
       <Link to={backLinkHref.current}>
-        <button>Go back</button>
+        <Button>Go back</Button>
       </Link>
-      <img
-        src={
-          movie.poster_path &&
-          `https://image.tmdb.org/t/p/w200/${movie.poster_path}`
-        }
-        alt={movie.original_title}
-      />
-      <h2>{movie.original_title}</h2>
-      <p>User score: {(movie.vote_average * 10).toFixed(0)}%</p>
-      <p>Overview: {movie.overview}</p>
-      <p>Genres: {genres}</p>
+      <Container>
+        <Card>
+          <Image
+            src={
+              movie.poster_path &&
+              `https://image.tmdb.org/t/p/w200/${movie.poster_path}`
+            }
+            alt={movie.original_title}
+          />
+          <Capture>{movie.original_title}</Capture>
+          <Vote>User score: {(movie.vote_average * 10).toFixed(0)}%</Vote>
+          <Overview>Overview: {movie.overview}</Overview>
+          <Genres>Genres: {genres}</Genres>
+        </Card>
 
-      <ul>
-        <li>
-          <Link to="cast">Cast</Link>
-        </li>
-        <li>
-          <Link to="reviews">Review</Link>
-        </li>
-      </ul>
-      <Outlet />
-    </div>
+        <List>
+          <ListItem>
+            <StyledLink to="cast">Cast</StyledLink>
+          </ListItem>
+          <ListItem>
+            <StyledLink to="reviews">Review</StyledLink>
+          </ListItem>
+        </List>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Outlet />
+        </Suspense>
+      </Container>
+    </>
   );
 };
 export default MovieDetails;
